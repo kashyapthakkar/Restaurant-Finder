@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Random Restaurent</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<style>
+			.loader {
+			  border: 16px solid #f3f3f3;
+			  border-radius: 50%;
+			  border-top: 16px solid #3498db;
+			  width: 300px;
+			  height: 300px;
+			  -webkit-animation: spin 2s linear infinite; /* Safari */
+			  animation: spin 2s linear infinite;
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			  
+			}
+
+			/* Safari */
+			@-webkit-keyframes spin {
+			  0% { -webkit-transform: rotate(0deg); }
+			  100% { -webkit-transform: rotate(360deg); }
+			}
+
+			@keyframes spin {
+			  0% { transform: rotate(0deg); }
+			  100% { transform: rotate(360deg); }
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container">
+			<h1 class="text-center"><strong>Random Restaurant</strong></h1>
+			<div  class="text-center">
+				<h2 id="status"><strong>Finding your location...</strong></h2>
+			</div>
+			<div class="loader" id="loader"></div>
+			<div id="restaurents">
+				<ul class="list-unstyled">
+			
+				</ul>
+			</div>
+			
+			
+		</div>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script>
+		
+			$(document).ready(function(){
+				getLocation();
+				function getLocation() {
+					if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(showPosition);
+						
+					} 
+				}
+				function showPosition(position){
+					$("#status").html("<strong>Finding restaurants near  you...</strong>");
+					$.get({
+						url: 'https://csunix.mohawkcollege.ca/tooltime/10133/2017/api/api.php',
+						data : {lat: position.coords.latitude, long: position.coords.longitude},
+						success: function(data)
+						{
+							$("#status").html("<strong>Found these restaurants...</strong>");
+							$("#loader").hide();
+							var jsonData = JSON.parse(data);
+							for(var i = 0; i < 20; i++){
+								
+								
+								$("#restaurents > ul").append(li);
+								
+								if(jsonData.businesses[i].rating == 0){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_0.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 1){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_1.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 1.5){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_1_half.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 2){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_2.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 2.5){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_2_half.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 3){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_3.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 3.5){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_3_half.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 4){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85px' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_4.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 4.5){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_4_half.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}else if(jsonData.businesses[i].rating == 5){
+									var li = $("<li><div class='media' style='margin-bottom:15px;'><div class='media-left'><img class='media-object' src='"+jsonData.businesses[i].image_url+"' height='85' width='64' ></div><div class='media-body'><h4 class='media-heading'><strong>"+jsonData.businesses[i].name+"</strong></h4>"+jsonData.businesses[i].location.address1+","+jsonData.businesses[i].location.city+","+jsonData.businesses[i].location.state+","+jsonData.businesses[i].location.zip_code+","+jsonData.businesses[i].location.country+"<br>"+jsonData.businesses[i].phone+"<br> <span id = 'ratings"+i+"'><img src='yelp_stars/web_and_ios/small/small_5.png'></span> "+jsonData.businesses[i].review_count+" Reviews</div></div></li>");
+								}
+									
+							}
+							// accessing specific properties of the JSON object
+							//$("#businessname").html(jsonData.businesses[0].name); 
+							
+						}
+					})
+				}
+			});
+			
+			
+			
+			
+		</script>
+	</body>
+</html>
